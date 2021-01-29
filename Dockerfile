@@ -12,8 +12,6 @@ RUN apt-get -y install \
     binutils \
     binwalk \
     bison \
-    bison \
-    build-essential \
     build-essential \
     clang \
     cmake \
