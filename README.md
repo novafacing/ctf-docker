@@ -37,11 +37,8 @@ Like the output says....copy paste the link to your browser :)
 
 # Configurables
 
-A couple built in configurables:
-
-1. You can use any JupyterLab theme from [here](https://github.com/arbennett/jupyterlab-themes) by modifying $THEME
-2. You can modify the username and password with $USER and replacing `password` with something better.
-3. You have the dockerfile....go to town. PRs welcome.
+1. You can modify the username and password with $USER and replacing `password` with something better.
+2. You have the dockerfile....go to town. PRs welcome.
 
 # Size
 
