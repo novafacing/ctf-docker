@@ -62,15 +62,6 @@ RUN apt-get -y build-dep qemu
 RUN python3 -m pip install -U pip
 RUN python3 -m pip install virtualenv
 
-WORKDIR /
-RUN wget https://ghidra-sre.org/ghidra_9.1.2_PUBLIC_20200212.zip
-RUN unzip ghidra_9.1.2_PUBLIC_20200212.zip
-
-RUN git clone https://github.com/pwndbg/pwndbg /pwndbg
-WORKDIR /pwndbg
-RUN ./setup.sh
-WORKDIR /
-
 RUN git clone https://github.com/angr/angr-dev /angr-dev
 WORKDIR /angr-dev
 RUN ./setup.sh -i -e angr
@@ -91,7 +82,6 @@ RUN python3 -m pip install \
 RUN python3 -m pip install \
     git+https://github.com/angr/phuzzer
 
-
 ENV USER=ctf
 ENV SHELL=/usr/bin/zsh
 
@@ -104,4 +94,8 @@ RUN echo "$USER:password" | chpasswd && adduser $USER sudo
 USER $USER
 RUN bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 WORKDIR /home/$USER/
+RUN git clone https://github.com/pwndbg/pwndbg /pwndbg
+WORKDIR /home/$USER/pwndbg
+RUN ./setup.sh
+WORKDIR /home/$USER
 
