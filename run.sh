@@ -7,7 +7,7 @@ else
     I=0
     for VAR in "$@"; do
         MOUNTS+=("-v")
-        MOUNTS+=("${VAR}:/home/ctf/mount${I}")
+        MOUNTS+=("${VAR}:/root/mount${I}")
         ((I=I+1))
     done
     echo "Mounting with: ${MOUNTS[@]}..."
