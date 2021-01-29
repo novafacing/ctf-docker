@@ -89,13 +89,14 @@ RUN apt-get -y install sudo
 RUN useradd -m $USER -s $SHELL
 RUN touch /home/$USER/.zshrc
 RUN echo "$USER:password" | chpasswd && adduser $USER sudo
+RUN git clone https://github.com/pwndbg/pwndbg /home/$USER/pwndbg
+WORKDIR /home/$USER/pwndbg
+RUN ./setup.sh
+WORKDIR /home/$USER
+RUN echo "source /home/ctf/pwndbg/gdbinit.py" > /home/$USER/.gdbinit
 
 # ENV THEME=nord
 USER $USER
 RUN bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 WORKDIR /home/$USER/
-RUN git clone https://github.com/pwndbg/pwndbg /pwndbg
-WORKDIR /home/$USER/pwndbg
-RUN ./setup.sh
-WORKDIR /home/$USER
 
