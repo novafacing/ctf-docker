@@ -57,20 +57,29 @@ RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list
-RUN apt-get -y update
-RUN apt-get -y build-dep qemu
-RUN python3 -m pip install -U pip
-RUN python3 -m pip install virtualenv
 
-RUN git clone https://github.com/angr/angr-dev /angr-dev
-WORKDIR /angr-dev
-RUN ./setup.sh -i -e angr
-WORKDIR /
+RUN apt-get -y update
+RUN python3 -m pip install -U pip
+RUN python -m pip install -U pip
+RUN python3 -m pip install virtualenv
+RUN python -m pip install virtualenv
+
+# Install angr and phuzzer
+# Note, you need cpu governor = performance
+# It'll yell at you though no worries...
+WORKDIR /root
+RUN git clone https://github.com/angr/angr-dev /root/angr-dev
+WORKDIR /root/angr-dev
+RUN ./setup.sh -i -u
+RUN python3 -m pip install \
+    https://github.com/angr/wheels/blob/master/shellphish_afl-1.2.1-py2.py3-none-manylinux1_x86_64.whl?raw=true
+RUN python3 -m pip install \
+    https://github.com/angr/wheels/blob/master/shellphish_qemu-0.10.0-py3-none-manylinux1_x86_64.whl?raw=true
+RUN ./setup.sh -u phuzzer
+RUN python3 -c 'import phuzzer; print("Phuzzer Installed")'
+WORKDIR /root/
 
 RUN python3 -m pip install \
-    git+https://github.com/shellphish/shellphish-afl \
-    git+https://github.com/shellphish/driller \
-    git+https://github.com/angr/tracer \
     one_gadget \
     jupyter \
     jupyterlab \
@@ -79,24 +88,11 @@ RUN python3 -m pip install \
     ropper \
     r2pipe
 
-RUN python3 -m pip install \
-    git+https://github.com/angr/phuzzer
-
-ENV USER=ctf
-ENV SHELL=/usr/bin/zsh
-
-RUN apt-get -y install sudo
-RUN useradd -m $USER -s $SHELL
-RUN touch /home/$USER/.zshrc
-RUN echo "$USER:password" | chpasswd && adduser $USER sudo
-RUN git clone https://github.com/pwndbg/pwndbg /home/$USER/pwndbg
-WORKDIR /home/$USER/pwndbg
+RUN git clone https://github.com/pwndbg/pwndbg /root/pwndbg
+WORKDIR /root/pwndbg
 RUN ./setup.sh
-WORKDIR /home/$USER
-RUN echo "source /home/ctf/pwndbg/gdbinit.py" > /home/$USER/.gdbinit
+WORKDIR /root
 
 # ENV THEME=nord
-USER $USER
 RUN bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-WORKDIR /home/$USER/
 
