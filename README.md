@@ -31,9 +31,11 @@ Run the container by:
 ./run.sh [paths]
 ```
 
-Where paths is an optional space-separated list of directories to mount to the container. They will be mounted to /home/$USER/mount[0...].
+Where paths is an optional space-separated list of directories to mount to the container. They will be mounted to /root//mount[0...].
 
 Like the output says....copy paste the link to your browser :)
+
+If you get error output trying to use phuzzer, just copy and paste the commands *into your host machine's terminal*. They won't work inside the container.
 
 # Configurables
 
