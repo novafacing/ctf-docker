@@ -91,15 +91,11 @@ RUN python3 -m pip install \
 RUN python3 -m pip install \
     git+https://github.com/angr/phuzzer
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get -y install nodejs
 
-ENV THEME=gruvbox-dark
 ENV USER=ctf
 ENV SHELL=/usr/bin/zsh
 
 RUN apt-get -y install sudo
-RUN python3 -m jupyter labextension install @arbennett/base16-${THEME}
 RUN useradd -m $USER -s $SHELL
 RUN touch /home/$USER/.zshrc
 RUN echo "$USER:password" | chpasswd && adduser $USER sudo
@@ -107,6 +103,5 @@ RUN echo "$USER:password" | chpasswd && adduser $USER sudo
 # ENV THEME=nord
 USER $USER
 RUN bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-RUN sed -i -- 's/robbyrussel/norm/g' /home/$USER/.zshrc
 WORKDIR /home/$USER/
 
