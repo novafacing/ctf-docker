@@ -31,7 +31,7 @@ Run the container by:
 ./run.sh [paths]
 ```
 
-Where paths is a space-separated list of directories to mount to the container. They will be mounted to /home/$USER/mount[0...].
+Where paths is an optional space-separated list of directories to mount to the container. They will be mounted to /home/$USER/mount[0...].
 
 Like the output says....copy paste the link to your browser :)
 
