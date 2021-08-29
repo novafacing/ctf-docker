@@ -86,11 +86,10 @@ RUN bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/t
 WORKDIR /root
 RUN git clone https://github.com/angr/angr-dev /root/angr-dev
 WORKDIR /root/angr-dev
-RUN ./setup.sh -i -u
-RUN python3 -m pip install \
-    https://github.com/angr/wheels/blob/master/shellphish_afl-1.2.1-py2.py3-none-manylinux1_x86_64.whl?raw=true
-RUN python3 -m pip install \
-    https://github.com/angr/wheels/blob/master/shellphish_qemu-0.10.0-py3-none-manylinux1_x86_64.whl?raw=true
-RUN ./setup.sh -u phuzzer
-RUN python3 -c 'import phuzzer; print("Phuzzer Installed")'
+RUN ./setup.sh -i -e angr -u
+ENV WORKON_HOME /root/.virtualenvs
+ENV VIRTUALENVWRAPPER_PYTHON /usr/bin/python3
+RUN python3 -m pip install virtualenvwrapper
+RUN bash -c "source /root/.local/bin/virtualenvwrapper.sh && workon angr && python3 -m pip install https://github.com/angr/wheels/blob/master/shellphish_afl-1.2.1-py2.py3-none-manylinux1_x86_64.whl?raw=true && python3 -m pip install https://github.com/angr/wheels/blob/master/shellphish_qemu-0.10.0-py3-none-manylinux1_x86_64.whl?raw=true && ./setup.sh -u phuzzer && deactivate"
 WORKDIR /root/
+COPY .bashrc .bashrc
