@@ -45,3 +45,7 @@ If you get error output trying to use phuzzer, just copy and paste the commands 
 # Size
 
 The container is about 6.6GB fully built. That sounds bad until you consider it has Phuzzer on it. Consider commenting out Phuzzer if you need the space, or just buy a bigger hard drive.
+
+# Phuzzer
+
+Phuzzer can be run by cd'ing to `angr-dev` and running `workon angr` followed by `python3 -m phuzzer <options>`
